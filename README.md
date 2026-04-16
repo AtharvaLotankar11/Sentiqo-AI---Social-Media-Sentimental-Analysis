@@ -87,6 +87,6 @@ Sentiqo utilizes a high-contrast design language:
 ---
 
 ## 👨‍💻 THE CRAFT
-Built with ❤️ by a **Third Year IT Student & Data Science Intern** 🚀
+Built with ❤️ by **Atharva Lotankar** (Third Year IT Student & Data Science Intern) 🚀
 
 > "This project represents a fusion of academic rigor and industry-level Data Science exploration."
