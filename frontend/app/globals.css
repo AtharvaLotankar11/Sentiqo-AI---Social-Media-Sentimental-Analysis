@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+}
+
+body {
+  font-family: var(--font-inter);
+}
+
+/* Neo-brutalism styles */
+.card-brutalism {
+  @apply bg-white border-2 border-black rounded-lg;
+}
+
+.btn-brutalism {
+  @apply bg-primary text-white font-semibold rounded border-2 border-black hover:scale-105 transition-transform;
+}
