@@ -84,10 +84,9 @@ Sentiqo utilizes a high-contrast design language:
 
 ---
 
-## 👤 CREATOR
-**ATHARVA LOTANKAR**
-*Linguistic Intelligence Architect*
-
 ---
 
-**SENTIQO AI © 2026 — SECURE DISTRIBUTED INTELLIGENCE MODULE**
+## 👨‍💻 THE CRAFT
+Built with ❤️ by a **Third Year IT Student & Data Science Intern** 🚀
+
+> "This project represents a fusion of academic rigor and industry-level Data Science exploration."
