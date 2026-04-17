@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Card from '@/components/ui/Card';
 import TrendLineChart from '@/components/dashboard/TrendLineChart';
 import { Filter, Download, Calendar, RefreshCw, AlertTriangle } from 'lucide-react';
@@ -11,6 +11,8 @@ const TrendsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [trendData, setTrendData] = useState([]);
+  const [exporting, setExporting] = useState(false);
+  const pageRef = useRef(null);
 
   const loadData = async () => {
     setLoading(true);
@@ -23,6 +25,36 @@ const TrendsPage = () => {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleExportPDF = async () => {
+    setExporting(true);
+    try {
+      const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([
+        import('jspdf'),
+        import('html2canvas'),
+      ]);
+
+      const element = pageRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: 'a4' });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`sentiqo-trends-${new Date().toISOString().slice(0, 10)}.pdf`);
+    } catch (err) {
+      console.error('PDF export failed:', err);
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -40,7 +72,7 @@ const TrendsPage = () => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" ref={pageRef}>
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-black uppercase italic tracking-tighter text-dark">Historical Trends</h1>
@@ -52,9 +84,9 @@ const TrendsPage = () => {
             <Filter size={16} />
             REFRESH
           </Button>
-          <Button variant="primary" className="flex items-center gap-2">
+          <Button variant="primary" className="flex items-center gap-2" onClick={handleExportPDF} disabled={exporting}>
             <Download size={16} />
-            EXPORT PDF
+            {exporting ? 'EXPORTING...' : 'EXPORT PDF'}
           </Button>
         </div>
       </div>
