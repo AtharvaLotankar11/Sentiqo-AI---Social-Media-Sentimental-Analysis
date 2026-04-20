@@ -40,7 +40,29 @@ for text, label in zip(X, y):
 X = filtered_X
 y = filtered_y
 
-print(f"✓ Loaded {len(X)} samples (after filtering short texts)")
+# Filter out None labels and normalize to binary (0, 1)
+print(f"Samples before None filtering: {len(X)}")
+final_X = []
+final_y = []
+for text, label in zip(X, y):
+    if label is not None:
+        # Normalize label to binary: 0 (negative) or 1 (positive)
+        # Handle cases where label might be 4 (from Sentiment140 format)
+        if label in [0, '0']:
+            normalized_label = 0
+        elif label in [1, '1', 4, '4']:
+            normalized_label = 1
+        else:
+            # Skip invalid labels
+            continue
+        
+        final_X.append(text)
+        final_y.append(normalized_label)
+
+X = final_X
+y = final_y
+
+print(f"✓ Loaded {len(X)} samples (after filtering short texts and None labels)")
 print(f"  Positive: {sum(y)} ({sum(y)/len(y)*100:.1f}%)")
 print(f"  Negative: {len(y) - sum(y)} ({(len(y)-sum(y))/len(y)*100:.1f}%)")
 
